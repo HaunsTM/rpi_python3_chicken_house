@@ -28,8 +28,8 @@ def beat_heart():
 
 def report_sensor_value():
     tfmini_plus.ensure_serial_is_open()
-    sensor_data = tfmini_plus.get_sensor_data()
     if tfmini_plus.sensor_data_is_available():
+        sensor_data = tfmini_plus.get_sensor_data()
         mqtt_client_reporter.publish_message(args.mqtt_topic_lidar_message, sensor_data.to_json())
 
 def run():

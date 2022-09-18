@@ -47,5 +47,5 @@ class tfmini_plus_data:
         self._error = self._NO_ERROR
 
     def to_json(self):
-        json = '{ "distance_cm":"' + str(self._distance_cm) + '", "strength":' + str(self._strength) + '", "temperature_c":' + str(self._temperature_c) + ', "error":"' + str(self._error) + '"}'
+        json = '{"distance_cm":' + str(self._distance_cm) + ', "strength":' + str(self._strength) + ', "temperature_c":' + str(self._temperature_c) + ', "error":"' + str(self._error) + '"}'
         return json
