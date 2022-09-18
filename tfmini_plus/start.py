@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*
 import argparse
 from tfmini_plus import tfmini_plus
-from datetime import datetime, timezone
+
 import sys, os
 sys.path.insert(0,
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from common.mqtt_client import mqtt_client
+from common.mqtt_client_reporter import mqtt_client_reporter
 del sys.path[0]
 
 parser = argparse.ArgumentParser(description = 'Usage of LIDAR-script')
@@ -22,26 +21,16 @@ args = parser.parse_args()
 
 tfmini_plus = tfmini_plus(args.tfmini_plus_port, args.tfmini_plus_baud_rate)
 
-client = mqtt_client(args.broker_address, args.mqtt_topic_heart_beat_message)
+mqtt_client_reporter = mqtt_client_reporter(args.broker_address, args.mqtt_topic_heart_beat_message)
 
-
-last_reported_heart_beat_time = -1
-next_time_heart_beat_time = -1
-
-def beat_heart():
-    global last_reported_heart_beat_time, next_time_heart_beat_time
-    utc = datetime.now(timezone.utc).timestamp() * 1000
-
-    if next_time_heart_beat_time < utc:
-        last_reported_heart_beat_time = utc
-        next_time_heart_beat_time = last_reported_heart_beat_time + args.heart_beat_frequency_ms
-        client.publish_message(args.mqtt_topic_heart_beat_message, str(utc))
+def beat_heart():    
+    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms)
 
 def report_sensor_value():
     tfmini_plus.ensure_serial_is_open()
     sensor_data = tfmini_plus.get_sensor_data()
     if tfmini_plus.sensor_data_is_available():
-        client.publish_message(args.mqtt_topic_lidar_message, sensor_data.to_json())
+        mqtt_client_reporter.publish_message(args.mqtt_topic_lidar_message, sensor_data.to_json())
 
 def run():
     while True:

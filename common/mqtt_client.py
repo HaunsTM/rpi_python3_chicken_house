@@ -5,7 +5,6 @@ import string
 
 # -*- coding: utf-8 -*
 class mqtt_client:
-
     
     def __init__(self, broker_address: str, heart_beat_topic: str):
         self._broker_address = broker_address

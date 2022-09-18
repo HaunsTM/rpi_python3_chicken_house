@@ -5,7 +5,7 @@ import sys, os
 sys.path.insert(0,
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from common.mqtt_client import mqtt_client
+from common.mqtt_client_reporter import mqtt_client_reporter
 del sys.path[0]
 
 import RPi.GPIO as GPIO
@@ -29,20 +29,25 @@ all_temperature_sensors_infos = ds18b20.all_temperature_sensors_infos()
 
 all_sensor_data_collectors = list(map(ds18b20,all_temperature_sensors_infos))
 
-mq = mqtt_client(args.broker_address, args.mqtt_topic_heart_beat_message)
+mqtt_client_reporter = mqtt_client_reporter(args.broker_address, args.mqtt_topic_heart_beat_message)
 
+def beat_heart():    
+    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms)
 
-
-while True:
+def report_sensor_values():
     for sensor in all_sensor_data_collectors:
         sensor_data = sensor.get_sensor_data()
 
-        mq.publish_message( args.mqtt_topic_ds18b20_message, sensor_data.to_json())
+        mqtt_client_reporter.publish_message( args.mqtt_topic_ds18b20_message, sensor_data.to_json())
         sensor_data.set_initial_values()
-        # print("Device id " + sensor_data.get_sensor_info().get_device_data_file() + "; Temp (°C): " + str(sensor_data.get_temperature_c()))
-  #time.sleep(1.0)
 
+def run():
+    while True:
+        report_sensor_values()
+        beat_heart()
 
-i=0
-
-y=9
+if __name__ == "__main__":
+    try:
+        run()
+    except KeyboardInterrupt: # ctrl + c in terminal.    
+        print("program interrupted by the user")
