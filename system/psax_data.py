@@ -33,7 +33,7 @@ class psax_data:
         return self.get_element_by_index(8)
 
     def get_pgid(self) -> str:
-        return self.get_element_by_index(9)
+        return  self.get_element_by_index(9)
 
     def get_etime(self) -> str:
         return self.get_element_by_index(10)
@@ -48,26 +48,27 @@ class psax_data:
         return self.get_element_by_index(13)
 
     def get_vsz(self) -> str:
-        return self.get_element_by_index(14)
+        return  self.get_element_by_index(14)
     
     def get_element_by_index(self, index: int) -> str:
         value = self._data_row.split(self._delimiter)[index].strip()
         return value
     
     def to_json(self) -> str:
-        json = ('{"pcpu":"' + self.get_pcpu() + '",' +
+        json = ('{"pcpu":' + self.get_pcpu() + ',' +
                 '"group":"' + self.get_group() + '",' +
-                '"ppid":"' + self.get_ppid() + '",' +
+                '"ppid":' + (self.get_ppid() if self.get_ppid().isnumeric() else '"n/a"') + ',' +
                 '"user":"' + self.get_user() + '",' +
                 '"args":"' + self.get_args() + '",' +
                 '"comm":"' + self.get_comm() + '",' +
                 '"rgroup":"' + self.get_rgroup() + '",' +
-                '"nice":"' + self.get_nice() + '",' +
-                '"pid":"' + self.get_pid() + '",' +
-                '"pgid":"' + self.get_pgid() + '",' +
+                '"nice":' + (self.get_nice() if self.get_nice().isnumeric() else '"n/a"') + ',' +
+                '"pid":' + (self.get_pid() if self.get_pid().isnumeric() else '"n/a"') + ',' +
+                '"pgid":' + (self.get_pgid() if self.get_pgid().isnumeric() else '"n/a"') + ',' +
                 '"etime":"' + self.get_etime() + '",' +
                 '"ruser":"' + self.get_ruser() + '",' +
                 '"time":"' + self.get_time() + '",' +
                 '"tty":"' + self.get_tty() + '",' +
-                '"vsz":"' + self.get_vsz() + '"}')
+                '"vsz":' + (self.get_vsz() if self.get_vsz().isnumeric() else '"n/a"') + '}')
+
         return json
