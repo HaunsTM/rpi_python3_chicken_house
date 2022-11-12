@@ -19,12 +19,12 @@ parser.add_argument("--tfmini_plus_baud_rate", default = 115200, type = int, hel
 
 args = parser.parse_args()
 
-tfmini_plus = tfmini_plus(args.tfmini_plus_port, args.tfmini_plus_baud_rate)
+tfmini_plus = tfmini_plus(args.tfmini_plus_port, args.tfmini_plus_baud_rate, os.getpid())
 
 mqtt_client_reporter = mqtt_client_reporter(args.broker_address, args.mqtt_topic_heart_beat_message)
 
 def beat_heart():    
-    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms)
+    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms, os.getpid())
 
 def report_sensor_value():
     tfmini_plus.ensure_serial_is_open()

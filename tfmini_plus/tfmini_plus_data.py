@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*
 class tfmini_plus_data:
 
-    def __init__(self):
+    def __init__(self, pid: int):
+        self._pid = pid
+        
         self._NO_DISTANCE_CM = -1
         self._NO_VALID_DATA = "NO VALID DATA"
         self._NO_ERROR = "NO ERROR"
@@ -21,6 +23,9 @@ class tfmini_plus_data:
 
     def set_error(self, error):
         self._error = error
+    
+    def get_pid(self) -> int:
+        return self._pid
 
     def get_strength(self) -> int:
         return self._strength
@@ -47,5 +52,6 @@ class tfmini_plus_data:
         self._error = self._NO_ERROR
 
     def to_json(self):
-        json = '{"distance_cm":' + str(self._distance_cm) + ', "strength":' + str(self._strength) + ', "temperature_c":' + str(self._temperature_c) + ', "error":"' + str(self._error) + '"}'
+        json = '{"distance_cm":' + str(self._distance_cm) + ', "strength":' + str(self._strength) + ', "temperature_c":' + str(self._temperature_c) + ', "error":"' +str(self._error) + '", "pid":' + str(self._pid) + '}'
+        
         return json

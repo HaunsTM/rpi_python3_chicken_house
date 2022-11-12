@@ -2,8 +2,9 @@ import ds18b20_sensor_info
 # -*- coding: utf-8 -*
 class ds18b20_data:
 
-    def __init__(self, sensor_info: ds18b20_sensor_info):
+    def __init__(self, sensor_info: ds18b20_sensor_info, pid: int):
         self._sensor_info = sensor_info
+        self._pid = pid
 
         self._NO_ERROR = "NO ERROR"
         self._INVALID_TEMPETRATURE_C = -300
@@ -19,7 +20,9 @@ class ds18b20_data:
 
     def set_error(self, error):
         self._error = error
-
+    
+    def get_pid(self) -> int:
+        return self._pid
 
     def get_temperature_c(self) -> float:
         return self._temperature_c
@@ -27,11 +30,10 @@ class ds18b20_data:
     def set_temperature_c(self, temperature_c: float):
         self._temperature_c = temperature_c
 
-
     def set_initial_values(self):
         self._temperature_c = self._INVALID_TEMPETRATURE_C
         self._error = self._NO_ERROR
 
     def to_json(self):
-        json = '{ "device_data_file":"' + str(self._sensor_info.get_device_data_file()) + '", "temperature_c":' + str(self._temperature_c) + ', "error":"' + str(self._error) + '"}'
+        json = '{ "device_data_file":"' + str(self._sensor_info.get_device_data_file()) + '", "temperature_c":' + str(self._temperature_c) + ', "error":"' + str(self._error) + '", "pid":' + str(self._pid) + '}'
         return json

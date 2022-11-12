@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 import paho.mqtt.client as mqtt
 import random
 import string
+import logging
 
 # -*- coding: utf-8 -*
 class mqtt_client:
@@ -24,11 +25,15 @@ class mqtt_client:
     def get_mqtt_client_id(self):
         return self._mqtt_client_id
 
+    def get_pid(self) -> int:
+        return self._pid
+
     def publish_message(self, mqtt_topic, data):
         self._client.publish(mqtt_topic, data)
         
-    def send_heart_beat_message(self):
+    def send_heart_beat_message(self, pid: int):
         utc = datetime.now(timezone.utc).timestamp() * 1000
-
-        self.publish_message(self._heart_beat_topic, str(utc))
+        
+        json = '{"utc":' + str(utc) + ', "pid":' + str(pid) + '}'
+        self._client.publish(self._heart_beat_topic, json)
     

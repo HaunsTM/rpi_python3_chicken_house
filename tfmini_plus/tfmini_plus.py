@@ -4,10 +4,12 @@ from tfmini_plus_data import tfmini_plus_data
 
 class tfmini_plus:
 
-    def __init__(self, port, baud_rate: int):
+    def __init__(self, port, baud_rate: int, pid: int):
         self._port = port
         self._baud_rate = baud_rate
+        self._pid = pid
         self._serial = serial.Serial(port, baud_rate)
+    
     
     def ensure_serial_is_closed(self):
         if self._serial != None and self._serial.isOpen() == True:
@@ -16,6 +18,9 @@ class tfmini_plus:
     def ensure_serial_is_open(self):
         if self._serial.isOpen() == False:
             self._serial.open()
+    
+    def get_pid(self) -> int:
+        return self._pid
 
     def sensor_data_is_available(self) -> bool:
         counter = self._serial.in_waiting # count the number of bytes of the serial port
@@ -25,7 +30,7 @@ class tfmini_plus:
     # we define a new function that will get the data from LiDAR and publish it
     def get_sensor_data(self) -> tfmini_plus_data:
         counter = self._serial.in_waiting # count the number of bytes of the serial port
-        sensor_data = tfmini_plus_data()
+        sensor_data = tfmini_plus_data(self._pid)
 
         if counter > 8:
             bytes_serial = self._serial.read(9)

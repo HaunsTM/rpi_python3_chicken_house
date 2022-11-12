@@ -32,7 +32,7 @@ all_sensor_data_collectors = list(map(ds18b20,all_temperature_sensors_infos))
 mqtt_client_reporter = mqtt_client_reporter(args.broker_address, args.mqtt_topic_heart_beat_message)
 
 def beat_heart():    
-    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms)
+    mqtt_client_reporter.send_heart_beat_message_if_it_is_time_to_do_so(args.heart_beat_frequency_ms, os.getpid())
 
 def report_sensor_values():
     for sensor in all_sensor_data_collectors:
