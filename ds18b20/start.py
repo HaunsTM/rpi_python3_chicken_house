@@ -36,7 +36,7 @@ def beat_heart():
 
 def report_sensor_values():
     for sensor in all_sensor_data_collectors:
-        sensor_data = sensor.get_sensor_data()
+        sensor_data = sensor.get_sensor_data(os.getpid())
 
         mqtt_client_reporter.publish_message( args.mqtt_topic_ds18b20_message, sensor_data.to_json())
         sensor_data.set_initial_values()

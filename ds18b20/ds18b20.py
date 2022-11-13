@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 
 class ds18b20:
 
-    def __init__( self, sensor_info: ds18b20_sensor_info ):
+    def __init__( self, sensor_info: ds18b20_sensor_info):
         self._sensor_info: ds18b20_sensor_info = sensor_info
 
     @staticmethod
@@ -24,10 +24,10 @@ class ds18b20:
             if os.path.isfile(device_data_file):
                 sensor_infos = ds18b20_sensor_info(device_data_file)
                 valid_sensor_infos.append(sensor_infos)
-        return valid_sensor_infos
+        return valid_sensor_infos    
 
-    def get_sensor_data(self) -> ds18b20_data:
-        sensor_data = ds18b20_data(self._sensor_info)
+    def get_sensor_data(self, pid: int) -> ds18b20_data:
+        sensor_data = ds18b20_data(self._sensor_info, pid)
 
         device_data_file = sensor_data.get_sensor_info().get_device_data_file()
         try:
