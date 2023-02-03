@@ -2,6 +2,7 @@
 from typing import List
 from psax_data import psax_data
 import subprocess
+import re
 
 class ps_util:
 

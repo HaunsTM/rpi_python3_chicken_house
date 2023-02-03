@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*
+import json
+
 class psax_data:
 
     def __init__(self, data_row: str, delimiter: str):
@@ -55,20 +57,21 @@ class psax_data:
         return value
     
     def to_json(self) -> str:
-        json = ('{"pcpu":' + self.get_pcpu() + ',' +
-                '"group":"' + self.get_group() + '",' +
-                '"ppid":' + (self.get_ppid() if self.get_ppid().isnumeric() else '"n/a"') + ',' +
-                '"user":"' + self.get_user() + '",' +
-                '"args":"' + self.get_args() + '",' +
-                '"comm":"' + self.get_comm() + '",' +
-                '"rgroup":"' + self.get_rgroup() + '",' +
-                '"nice":' + (self.get_nice() if self.get_nice().isnumeric() else '"n/a"') + ',' +
-                '"pid":' + (self.get_pid() if self.get_pid().isnumeric() else '"n/a"') + ',' +
-                '"pgid":' + (self.get_pgid() if self.get_pgid().isnumeric() else '"n/a"') + ',' +
-                '"etime":"' + self.get_etime() + '",' +
-                '"ruser":"' + self.get_ruser() + '",' +
-                '"time":"' + self.get_time() + '",' +
-                '"tty":"' + self.get_tty() + '",' +
-                '"vsz":' + (self.get_vsz() if self.get_vsz().isnumeric() else '"n/a"') + '}')
+        json_string = (
+            '{"pcpu":' + json.dumps(self.get_pcpu()) + ',' +
+            '"group":' + json.dumps(self.get_group()) + ',' +
+            '"ppid":' + json.dumps((self.get_ppid() if self.get_ppid().isnumeric() else '"n/a"')) + ',' +
+            '"user":' + json.dumps(self.get_user()) + ',' +
+            '"args":' + json.dumps(self.get_args()) + ',' +
+            '"comm":' + json.dumps(self.get_comm()) + ',' +
+            '"rgroup":' + json.dumps(self.get_rgroup()) + ',' +
+            '"nice":' + json.dumps((self.get_nice() if self.get_nice().isnumeric() else '"n/a"')) + ',' +
+            '"pid":' + json.dumps((self.get_pid() if self.get_pid().isnumeric() else '"n/a"')) + ',' +
+            '"pgid":' + json.dumps((self.get_pgid() if self.get_pgid().isnumeric() else '"n/a"')) + ',' +
+            '"etime":' + json.dumps(self.get_etime()) + ',' +
+            '"ruser":' + json.dumps(self.get_ruser()) + ',' +
+            '"time":' + json.dumps(self.get_time()) + ',' +
+            '"tty":' + json.dumps(self.get_tty()) + ',' +
+            '"vsz":' + json.dumps((self.get_vsz() if self.get_vsz().isnumeric() else '"n/a"')) + '}')
 
-        return json
+        return json_string
