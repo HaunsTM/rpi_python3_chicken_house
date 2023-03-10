@@ -10,8 +10,8 @@ del sys.path[0]
 
 parser = argparse.ArgumentParser(description = 'Usage of LIDAR-script')
 parser.add_argument("--broker_address", default = "localhost", type = str, help = "broker address")
-parser.add_argument("--mqtt_topic_lidar_message", default = "lidarMessage", type = str, help = "mqtt topic to publish lidar data on")
-parser.add_argument("--mqtt_topic_heart_beat_message", default="heartBeat", type = str, help = "mqtt topic to publish heart beat on")
+parser.add_argument("--mqtt_topic_message", default = "LIDAR_message", type = str, help = "mqtt topic to publish lidar data on")
+parser.add_argument("--mqtt_topic_heart_beat_message", default="LIDAR_heartBeat", type = str, help = "mqtt topic to publish heart beat on")
 parser.add_argument("--heart_beat_frequency_ms", default = 2 * 1000, type = int, help="the frequency (1/ms) at which heartbeats are sent")
 
 parser.add_argument("--tfmini_plus_port", default = "/dev/ttyAMA0", type = str, help = "port to connect to tf mini plus")
@@ -30,7 +30,7 @@ def report_sensor_value():
     tfmini_plus.ensure_serial_is_open()
     if tfmini_plus.sensor_data_is_available():
         sensor_data = tfmini_plus.get_sensor_data()
-        mqtt_client_reporter.publish_message(args.mqtt_topic_lidar_message, sensor_data.to_json())
+        mqtt_client_reporter.publish_message(args.mqtt_topic_message, sensor_data.to_json())
 
 def run():
     while True:

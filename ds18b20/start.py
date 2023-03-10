@@ -13,8 +13,8 @@ import RPi.GPIO as GPIO
 
 parser = argparse.ArgumentParser(description = 'Usage of ds18b20-script')
 parser.add_argument("--broker_address", default = "localhost", type = str, help = "broker address")
-parser.add_argument("--mqtt_topic_ds18b20_message", default = "ds18b20Message", type = str, help = "mqtt topic to publish lidar data on")
-parser.add_argument("--mqtt_topic_heart_beat_message", default="ds18b20HeartBeat", type = str, help = "mqtt topic to publish heart beat on")
+parser.add_argument("--mqtt_topic_message", default = "ds18b20_message", type = str, help = "mqtt topic to publish lidar data on")
+parser.add_argument("--mqtt_topic_heart_beat_message", default="ds18b20_heartBeat", type = str, help = "mqtt topic to publish heart beat on")
 parser.add_argument("--heart_beat_frequency_ms", default = 2 * 1000, type = int, help="the frequency (1/ms) at which heartbeats are sent")
 parser.add_argument("--gpio_pull_up_resistors", default = "4", type = str, help = "GPIO of pull up resistors, GPIO-list separated by ,")
 
@@ -38,7 +38,7 @@ def report_sensor_values():
     for sensor in all_sensor_data_collectors:
         sensor_data = sensor.get_sensor_data(os.getpid())
 
-        mqtt_client_reporter.publish_message( args.mqtt_topic_ds18b20_message, sensor_data.to_json())
+        mqtt_client_reporter.publish_message( args.mqtt_topic_message, sensor_data.to_json())
         sensor_data.set_initial_values()
 
 def run():
