@@ -1,6 +1,6 @@
 # RPI hen house
 ## Overview - the Pyhton part
-This project aims to make different kinds of measurements from computer status and other sensors in a henhouse available in a home automation system. More specifically, it involves reading sensors for temperatures (to control a heat lamp), and a position indicator (LIDAR) for an entrance hatch (a guillotine-type hatch that is raised up and down with a relay-controlled motor) as well.
+This project aims to make different kinds of measurements, from computer status to other sensor measurements, in a henhouse available in a home automation system. More specifically, it involves reading sensors for temperatures (to control a heat lamp), and a position indicator (LIDAR) for an entrance hatch (a guillotine-type hatch that is raised up and down with a relay-controlled motor) as well.
 
 In the henhouse, attached sensors are managed by a Raspberry Pi. It is also on this that the Python code executes. The Python script in turn communicates with a Node red application (javascript) where the data is refined before being published as MQTT for interested consumers in the home automation network. 
 
